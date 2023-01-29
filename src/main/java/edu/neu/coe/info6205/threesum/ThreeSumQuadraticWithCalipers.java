@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.threesum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -49,7 +50,23 @@ public class ThreeSumQuadraticWithCalipers implements ThreeSum {
     public static List<Triple> calipers(int[] a, int i, Function<Triple, Integer> function) {
         List<Triple> triples = new ArrayList<>();
         // FIXME : use function to qualify triples and to navigate otherwise.
-        // END 
+        // END
+        if(i==0 || (i>0 && a[i] != a[i-1])){
+            int start = i+1;
+            int end = a.length-1;
+            while(start<end){
+                if(function.apply(new Triple(a[start],a[end],a[i]))==0){
+                    Triple t = new Triple(a[i],a[start],a[end]);
+                    triples.add(t);
+                    start++;
+                    end--;
+                }else if(a[start]+a[end]+a[i]<0){
+                    start++;
+                }else{
+                    end--;
+                }
+            }
+        }
         return triples;
     }
 

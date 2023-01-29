@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.threesum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -42,6 +43,16 @@ public class TwoSumWithCalipers implements TwoSum {
     public static List<Pair> calipers(int[] a, Function<Pair, Integer> function) {
         List<Pair> pairs = new ArrayList<>();
         // FIXME : implement getPairs
+        for(int i=0;i<a.length-2;i++){
+            for(int j=i+1; j<a.length - 1;j++){
+                if(i==0 || (i>0 && a[i] != a[i-1])){
+                    if(function.apply(new Pair(a[i],a[j]))==0){
+                        pairs.add(new Pair(a[i],a[j]));
+                    }
+                }
+            }
+        }
+
         // END 
         return pairs;
     }
