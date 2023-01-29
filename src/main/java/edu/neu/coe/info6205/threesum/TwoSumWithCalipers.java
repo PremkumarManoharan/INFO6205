@@ -44,12 +44,12 @@ public class TwoSumWithCalipers implements TwoSum {
         List<Pair> pairs = new ArrayList<>();
         // FIXME : implement getPairs
         for(int i=0;i<a.length-2;i++){
-            for(int j=i+1; j<a.length - 1;j++){
-                if(i==0 || (i>0 && a[i] != a[i-1])){
+            for(int j=i+1; j<a.length;j++){
+               // if(i==0 || (i>0 && a[i] != a[i-1])){
                     if(function.apply(new Pair(a[i],a[j]))==0){
                         pairs.add(new Pair(a[i],a[j]));
                     }
-                }
+              //  }
             }
         }
 
