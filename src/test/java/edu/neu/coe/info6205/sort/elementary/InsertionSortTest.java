@@ -5,15 +5,13 @@
 package edu.neu.coe.info6205.sort.elementary;
 
 import edu.neu.coe.info6205.sort.*;
-import edu.neu.coe.info6205.util.Config;
-import edu.neu.coe.info6205.util.LazyLogger;
-import edu.neu.coe.info6205.util.PrivateMethodTester;
-import edu.neu.coe.info6205.util.StatPack;
+import edu.neu.coe.info6205.util.*;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -137,6 +135,144 @@ public class InsertionSortTest {
         final int fixes = (int) statPack.getStatistics(InstrumentedHelper.FIXES).mean();
         System.out.println(statPack);
         assertEquals(inversions, fixes);
+    }
+
+
+    @Test
+    public void benchMarkTestRandomOrder() throws Exception{
+        final Timer timer = new Timer();
+        int n =100;
+        final Config config = Config.setupConfig("true", "0", "1", "", "");
+        Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
+        SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
+        final double mean = timer.repeat(5,() -> {
+                    helper.init(n);
+                    Integer[] xs = new Integer[n];
+                    return xs;
+                },
+
+                //function
+                xs -> {
+                    Integer[] ys = sorter.sort(xs);
+                    return ys;
+                },
+                xs ->{
+                    xs = helper.random(Integer.class, r -> r.nextInt(1000));
+                    sorter.preProcess(xs);
+                    return xs;
+                },
+                ys ->{
+                    assertTrue(helper.sorted(ys));
+                    sorter.postProcess(ys);
+                }
+        );
+        System.out.println(mean);
+    }
+
+    @Test
+    public void benchMarkTestPartiallyOrdered() throws Exception{
+        final Timer timer = new Timer();
+        int n = 10;
+        final Config config = Config.setupConfig("true", "0", "1", "", "");
+        Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
+        SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
+        final double mean = timer.repeat(5,() -> {
+                    helper.init(n);
+                    Integer[] xs = new Integer[n];
+                    return xs;
+                },
+
+                //function
+                xs -> {
+                    Integer[] ys = sorter.sort(xs);
+                    return ys;
+                },
+                xs ->{
+                    Random rand = new Random();
+                    int sortIndex = rand.nextInt(n);
+                    for (int i = 0; i < n; i++) xs[i] = rand.nextInt(n);
+                    for (int i = 0; i < sortIndex; i++) {
+                        for (int j = i + 1; j < sortIndex; j++) {
+                            if (xs[i] > xs[j]) {
+                                int temp = xs[i];
+                                xs[i] = xs[j];
+                                xs[j] = temp;
+                            }
+                        }
+                    }
+                    sorter.preProcess(xs);
+                    return xs;
+                },
+                ys ->{
+                    assertTrue(helper.sorted(ys));
+                    sorter.postProcess(ys);
+                }
+        );
+        System.out.println(mean);
+    }
+    @Test
+    public void benchMarkTestOrdered() throws Exception{
+        final Timer timer = new Timer();
+        int n = 100;
+        final Config config = Config.setupConfig("true", "0", "1", "", "");
+        Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
+        SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
+        final double mean = timer.repeat(5,() -> {
+                    helper.init(n);
+                    Integer[] xs = new Integer[n];
+                    return xs;
+                },
+
+                //function
+                xs -> {
+                    Integer[] ys = sorter.sort(xs);
+                    return ys;
+                },
+                xs ->{
+                    for (int i = 0; i < n; i++) xs[i] = i;
+                    sorter.preProcess(xs);
+                    return xs;
+                },
+                ys ->{
+                    assertTrue(helper.sorted(ys));
+                    sorter.postProcess(ys);
+                }
+        );
+        System.out.println(mean);
+    }
+
+
+    @Test
+    public void benchMarkTestReverseOrder() throws Exception{
+        final Timer timer = new Timer();
+        int n =100;
+        final Config config = Config.setupConfig("true", "0", "1", "", "");
+        Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
+        SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
+        final double mean = timer.repeat(5,() -> {
+                    helper.init(n);
+                    Integer[] xs = new Integer[n];
+                    return xs;
+                },
+
+                //function
+                xs -> {
+                    Integer[] ys = sorter.sort(xs);
+                    return ys;
+                },
+                //pre-function
+                xs ->{
+                    for (int i = 0; i < n; i++) xs[i] = n - i;
+                    sorter.preProcess(xs);
+                    return xs;
+                },
+                //post-function
+                ys ->{
+                    assertTrue(helper.sorted(ys));
+                    sorter.postProcess(ys);
+                }
+        );
+        System.out.println(mean);
     }
 
     final static LazyLogger logger = new LazyLogger(InsertionSort.class);

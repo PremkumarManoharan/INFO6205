@@ -5,8 +5,11 @@ package edu.neu.coe.info6205.sort.elementary;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
 import edu.neu.coe.info6205.util.Config;
+
+import java.util.Arrays;
 
 public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
 
@@ -57,9 +60,12 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
      */
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
-
-        // FIXME
-        // END 
+        for(int i = from + 1 ; i < to;i++){
+            int k = i;
+            while(k>from && helper.swapStableConditional(xs,k) ){
+                k--;
+            }
+        }
     }
 
     public static final String DESCRIPTION = "Insertion sort";

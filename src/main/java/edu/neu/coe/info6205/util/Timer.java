@@ -61,7 +61,7 @@ public class Timer {
             //Calling supplier to get the value of t
             pause();
             T t = supplier.get();
-            //t = 20
+            //n=20
 
             //calling preFunction
 
