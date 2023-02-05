@@ -141,7 +141,7 @@ public class InsertionSortTest {
     @Test
     public void benchMarkTestRandomOrder() throws Exception{
         final Timer timer = new Timer();
-        int n =100;
+        int n =25600;
         final Config config = Config.setupConfig("true", "0", "1", "", "");
         Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
         SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
@@ -172,7 +172,7 @@ public class InsertionSortTest {
     @Test
     public void benchMarkTestPartiallyOrdered() throws Exception{
         final Timer timer = new Timer();
-        int n = 10;
+        int n = 25600;
         final Config config = Config.setupConfig("true", "0", "1", "", "");
         Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
         SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
@@ -213,7 +213,7 @@ public class InsertionSortTest {
     @Test
     public void benchMarkTestOrdered() throws Exception{
         final Timer timer = new Timer();
-        int n = 100;
+        int n = 25600;
         final Config config = Config.setupConfig("true", "0", "1", "", "");
         Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
         SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
@@ -245,7 +245,7 @@ public class InsertionSortTest {
     @Test
     public void benchMarkTestReverseOrder() throws Exception{
         final Timer timer = new Timer();
-        int n =100;
+        int n =25600;
         final Config config = Config.setupConfig("true", "0", "1", "", "");
         Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
         SortWithHelper<Integer> sorter = new InsertionSort<Integer>(helper);
