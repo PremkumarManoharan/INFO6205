@@ -8,6 +8,8 @@
 package edu.neu.coe.info6205.union_find;
 
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Height-weighted Quick Union with Path Compression
@@ -82,6 +84,12 @@ public class UF_HWQUPC implements UF {
         validate(p);
         int root = p;
         // FIXME
+        while(root != parent[root]) root = parent[root];
+        // only when pathCompression is enabled
+        if(pathCompression){
+            doPathCompression(p);
+        }
+
         // END 
         return root;
     }
@@ -170,6 +178,15 @@ public class UF_HWQUPC implements UF {
 
     private void mergeComponents(int i, int j) {
         // FIXME make shorter root point to taller one
+        if(height[i]>=height[j]){
+            height[i] = height[i] + height[j];
+            parent[j] = i;
+            height[j] = 0;
+        }else{
+            height[j] = height[i] + height[j];
+            parent[i] = j;
+            height[i] = 0;
+        }
         // END 
     }
 
@@ -178,6 +195,33 @@ public class UF_HWQUPC implements UF {
      */
     private void doPathCompression(int i) {
         // FIXME update parent to value of grandparent
-        // END 
+        if (parent[i] == i) {
+            return;
+        }
+        parent[i] = find(parent[i]);
+    }
+
+    private static int siteCount(int n){
+        UF h = new UF_HWQUPC(n);
+        int connections = 0;
+        while(h.components() > 1){
+            Random rand = new Random();
+            int x = rand.nextInt(n);
+            int y = rand.nextInt(n);
+            connections++;
+            h.connect(x,y);
+        }
+        return connections;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter number of sites:");
+        int n = sc.nextInt();
+        int total = 0;
+        for(int i=0;i<20;i++) {
+            total = total + siteCount(n);
+        }
+        System.out.println(total/20);
     }
 }
