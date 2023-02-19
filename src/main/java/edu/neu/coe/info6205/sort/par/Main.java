@@ -29,19 +29,20 @@ public class Main {
             long minTime = Integer.MAX_VALUE;
             int thread = 0;
             int cut = 0;
-            for (int k = 10; k <= 10; k++) {
-              //  System.out.println("Degree of parallelism:" + k);
+            int availableThreads = Runtime.getRuntime().availableProcessors();
+            for (int k = 1; k <= availableThreads; k++) {
+               //System.out.println(k);
                 int threadCount = k;
                 int count = 0;
                 ForkJoinPool myPool = new ForkJoinPool(threadCount);
-                for (int j = 1; j <= 50; j++) {
+                for (int j = 10; j <= 100; j++) {
                     count++;
                     ParSort.par = 0;
                     ParSort.cutoff = array.length * j / 100;
                     long time;
+                    for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000);
                     long startTime = System.currentTimeMillis();
                     for (int t = 0; t < 1; t++) {
-                        for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000);
                         ParSort.sort(array, 0, array.length, myPool);
                     }
                     long endTime = System.currentTimeMillis();
@@ -52,9 +53,12 @@ public class Main {
                         minTime = time;
                     }
                     timeList.add(time);
+                    System.out.print(array.length+","+k+","+ParSort.cutoff+","+((double)ParSort.cutoff/array.length)*100+","+ParSort.par+","+time+"##");
                 }
+                System.out.println("\n");
             }
-            System.out.println("Array Size: "+array.length+" Thread : "+thread+"  "+"CutOff : "+cut+"  Cutoff Persent : "+((double)cut/array.length)*100);
+           // System.out.println("Array Size: "+array.length+" Thread : "+thread+"  "+"CutOff : "+cut+"  Cutoff Persent : "+((double)cut/array.length)*100);
+           // System.out.println(array.length+","+thread+","+cut+","+((double)cut/array.length)*100+","+ParSort.par);
         }
 
 
