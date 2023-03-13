@@ -64,8 +64,25 @@ public class MergeSort<X extends Comparable<X>> extends SortWithHelper<X> {
             return;
         }
 
-        // FIXME : implement merge sort with insurance and no-copy optimizations
-        // END 
+        int mid = from + (to - from) / 2;
+
+        if (!noCopy) {
+            sort(aux, a, from, mid);
+            sort(aux, a, mid, to);
+        } else {
+            sort(a, aux, from, mid);
+            sort(a, aux, mid, to);
+        }
+
+        if (!insurance) {
+            merge(aux, a, from, mid, to);
+        } else if (!helper.less(aux[mid], aux[mid - 1])) {
+            // If the biggest element of the left side is less than or equal to the smallest element
+            // of the right side, we do not need to merge because the array is already sorted.
+            System.arraycopy(aux, from, a, from, to - from);
+        } else {
+            merge(aux, a, from, mid, to);
+        }
     }
 
     // CONSIDER combine with MergeSortBasic perhaps.

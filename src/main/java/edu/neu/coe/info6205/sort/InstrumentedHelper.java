@@ -322,6 +322,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
         gatherStatistic();
     }
 
+
     private void gatherStatistic() {
         if (statPack == null) throw new RuntimeException("InstrumentedHelper.postProcess: no StatPack");
         if (countCompares)
